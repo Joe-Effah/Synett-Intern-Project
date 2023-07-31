@@ -1,0 +1,55 @@
+
+._header{
+    padding: .2em 0;
+}
+._title{
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+._bubble{
+    outline: .2px solid rgb(121, 120, 120);
+    padding: .4em;
+    border-radius: 2em;
+    font-weight: 600;
+    font-size: .7rem;
+   
+}
+
+._desc{
+    padding: .5em;
+    margin: .5em;
+    margin-bottom: 1em;
+    height: max-content;
+    outline: .2px solid rgb(121, 120, 120) ;
+    border-radius: .4em;
+}
+._footsec{
+    padding: .6em .5em;
+}
+._card{
+    max-width: 16em;
+    outline: 2px solid rgb(31, 31, 228);
+    border-radius: 0.4em;
+    padding: .6em;
+    margin-bottom: .3em;
+    margin-left: .4em;
+}
+
+._updateDialog,._deleteDialog{
+    border-radius: 0.5em;
+    position: absolute;
+     top: 4em;
+}
+
+.wrapper{
+    margin-bottom: .3em;
+}
+._taskname{
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding-left: .2em;
+}
+
+._hide{
+    display: none;
+}

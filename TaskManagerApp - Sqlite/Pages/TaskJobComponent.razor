@@ -1,0 +1,175 @@
+@using TaskApp.Data
+@inject TaskAppService _Service
+@inject ILogger Logger
+
+
+<div class="_card">
+    
+    <div class="_header">
+        <p class="_title">@taskJobData.TaskName  <span class="_bubble"> @taskJobData.TaskPriorityLevel</span></p>
+       
+    </div>
+   <div class="_desc">
+    @taskJobData.TaskDescription
+   </div>
+    
+
+<div class="_footsec">
+<span class="_bubble">@taskJobData.TaskDeadline</span> 
+<span class="_bubble" style="margin-left: .4em;">@taskJobData.TaskCategories</span> 
+</div>
+<div class="_buttons">
+    <button class="btn btn-primary" @onclick="@(()=>UpdateDialogState="open")">Update</button>
+    <button class="btn btn-danger" @onclick="@(()=>DeleteDialogState="open")">Delete </button>
+</div>
+</div>
+
+<dialog open=@UpdateDialogState class="_updateDialog">
+<button  @onclick="@(()=>UpdateDialogState=null!)" class="btn btn-danger">Close </button>
+<EditForm OnSubmit="UpdateTask" Model="taskJobData">
+<DataAnnotationsValidator />
+<ValidationSummary />
+
+    <div class="container">
+        <h2>Update Task Details</h2>
+    <div class="wrapper">
+         <label for="__tname"  class="form-label">Update Task Name</label>
+     <InputText @bind-Value="taskJobData.TaskName"  class="form-control" id="__tname"></InputText>
+    </div>
+   
+   <div class="wrapper">
+    <label for="__tdes"  class="form-label"> Update Task's Description   </label>
+     <InputTextArea @bind-Value="taskJobData.TaskDescription"  class="form-control" id="__tdes"></InputTextArea>
+
+   </div>
+
+    
+   <div class="wrapper">
+     <label for="__tdeal"  class="form-label"> Update Task's Dealine </label>
+     <InputDate  @bind-Value="taskJobData.TaskDeadline" class="form-control" id="__tdeal"></InputDate>
+   </div>
+
+   
+   <div class="wrapper">
+     <label for="__tdeal"  class="form-label"> Update Task's Priority Level </label>
+     <InputSelect @bind-Value="taskJobData.TaskPriorityLevel"  class="form-select" id="__tdeal">
+
+                <option value="__">___</option>
+                <option value="Low">Low Priority</option>
+                <option value="Medium">Medium Priority</option>
+                <option value="High">High Priority</option>
+     </InputSelect>
+   </div>
+
+   
+
+
+   <div class="wrapper">
+     <label for="__tpriot"  class="form-label"> Update Task's Categories </label>
+    <InputText @bind-Value="taskJobData.TaskCategories"  class="form-control" id="__tpriot"></InputText>
+
+   </div>
+
+   
+   </div>
+
+   <button style="margin-left: .5em; margin-top:.4em;" class="btn btn-primary">Update Your Task</button>
+</EditForm>
+</dialog>
+
+<dialog open=@DeleteDialogState class="_deleteDialog">
+<button class="btn btn-danger" @onclick="@(()=>DeleteDialogState=null!)">Close </button>
+
+<EditForm OnSubmit="@DeleteTask" Model="taskJobData">
+
+    <p>You will Lose the Task Below</p>
+    <p class="_taskname">
+        @taskJobData.TaskName
+    </p>
+    <button class="btn btn-danger">Delete</button>
+</EditForm>
+
+
+
+
+</dialog>
+
+
+
+<dialog open=@AlertOpenState class="alert alert-info" role="alert"    >
+    <button class="btn btn-danger" @onclick=@(()=>AlertOpenState =(AlertOpenState == null ? "open" :
+        null)!)>Close</button>
+        <h2 class="_content">Sorry This Task has been Deleted </h2>
+        <p>Refresh List to Get Updated Tasks </p>
+
+    
+</dialog>
+
+
+@code {
+    
+
+
+    [Parameter]
+    public required TaskModel taskJobData { get; set; }
+
+    public string AlertOpenState  =null!;
+
+    private string UpdateDialogState =null!;
+
+    private string DeleteDialogState = null!;
+
+    
+
+    private async Task UpdateTask()
+    {
+        try
+        {
+             int Result =  await _Service!.EditTask(taskJobData);
+                 if(Result ==0)
+             {
+                 AlertOpenState = "open";
+
+             }else if(Result == 1)
+             {
+                 Logger.LogInformation("Task {TaskName} Updated at {Time}",taskJobData.TaskName,DateTime.UtcNow);
+                 UpdateDialogState = null!;
+             }
+        }
+        catch (Exception e)
+        {
+            
+            Logger.LogError("Error says {ErrorMessage} at {Time}",e.Message,DateTime.UtcNow);
+        }
+    }
+
+
+    private async Task  DeleteTask()
+    {
+        try
+        {
+           int Result = await _Service!.DeleteTask(taskJobData);
+             if(Result ==0)
+             {
+                 AlertOpenState = "open";
+
+             }else if(Result == 1)
+             {
+                
+                 Logger.LogInformation("Task {TaskName} Deleted at {Time}",taskJobData.TaskName,DateTime.UtcNow);
+
+                 DeleteDialogState=null!;
+             }
+        }
+        catch (Exception e)
+        {
+             DeleteDialogState=null!;
+            Logger.LogError("Task Deletion  Error is {ErrorMessage} Occured at {Time}",e.Message,DateTime.UtcNow);
+            AlertOpenState = "open";
+        }
+       
+    }
+
+    
+  
+}

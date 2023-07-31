@@ -1,0 +1,32 @@
+
+.task_card{
+    outline: 1px solid black;
+    border-radius: .4em;
+    box-shadow: 1px 2px 2px 2px rgb(32, 106, 141);
+}
+
+h2{
+    font-family: 'Cascadia Mono',Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.6rem;
+
+}
+._content{
+    font-size: 1.4rem;
+    font-family: 'Cascadia Mono',Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+
+}
+dialog{
+    position: absolute !important;
+    top: 7em;
+    z-index: 6000;
+    max-width: 50%;
+    border-radius: .4em;
+}
+dialog::backdrop{
+    background-color: rgba(15, 15, 15, 0.877)!important;
+    outline: none !important;
+}
+
+.wrapper{
+    margin-bottom: .4em;
+}
