@@ -1,0 +1,49 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = TaskApp
+build_property.RootNamespace = TaskApp
+build_property.ProjectDir = c:\Users\LENOVO\Desktop\C# Project\TaskApp\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = c:\Users\LENOVO\Desktop\C# Project\TaskApp
+build_property._RazorSourceGeneratorDebug = 
+
+[c:/Users/LENOVO/Desktop/C\# Project/TaskApp/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/LENOVO/Desktop/C\# Project/TaskApp/Pages/TasksListComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGFza3NMaXN0Q29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/LENOVO/Desktop/C\# Project/TaskApp/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[c:/Users/LENOVO/Desktop/C\# Project/TaskApp/Pages/TaskJobComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGFza0pvYkNvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-0lrpjxd6yb
+
+[c:/Users/LENOVO/Desktop/C\# Project/TaskApp/Pages/TaskManger.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGFza01hbmdlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-mrx0rru61w
+
+[c:/Users/LENOVO/Desktop/C\# Project/TaskApp/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-utt6onja4j
+
+[c:/Users/LENOVO/Desktop/C\# Project/TaskApp/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-25wb0qcqhe

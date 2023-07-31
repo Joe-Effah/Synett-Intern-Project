@@ -1,0 +1,176 @@
+@using TaskMangerApp.Model
+@inject ILogger Logger
+
+@page "/"
+
+
+@* Add New Task Form  *@
+<EditForm EditContext="@EditContexts"  OnValidSubmit="CreateNewTask" >
+<DataAnnotationsValidator />
+<ValidationSummary />
+
+<h2>Create a New Task</h2>
+    <div class="container">
+
+        
+    <label for="__tname" class="form-label">Your Task Name</label>
+     <InputText @bind-Value="TaskObject.TaskName" class="form-control"  id="__tname"></InputText>
+
+    <label for="__tdes" class="form-label"> Your Task's Description   </label>
+     <InputTextArea @bind-Value="TaskObject.TaskDescription" class="form-control" id="__tdes"></InputTextArea>
+
+    <label for="__tdeal" class="form-label"> Your Task's Dealine </label>
+     <InputDate  @bind-Value="TaskObject.TaskDeadline" class="form-control" id="__tdeal"></InputDate>
+
+
+    <label for="__tdeal" class="form-label"> Your Task's Priority Level </label>
+     <InputSelect @bind-Value="TaskObject.TaskPriorityLevel" class="form-select" id="__tdeal">
+
+                <option value="__">___</option>
+                <option value="Low">Low Priority</option>
+                <option value="Medium">Medium Priority</option>
+                <option value="High">High Priority</option>
+     </InputSelect>
+
+    <label for="__tpriot" class="form-label"> Your Task's Categories </label>
+    <InputText @bind-Value="TaskObject.TaskCategories" class="form-control" id="__tpriot"></InputText>
+
+   </div>
+
+   <button style="margin-left: 1em;margin-top:.5em;" class="btn btn-primary">Create A Task</button>
+</EditForm>
+
+
+<div class="Tasks">
+   
+@if (Container is null)
+{
+    <h3>No Tasks Has Been Created</h3>
+
+}else
+{
+    @* === Showing all  Tasks === *@
+    <div>
+        
+        <div class="wrapper" style="display: inline-block; margin-left:.4em; margin-top:2em;">
+            <h1>List Of Tasks</h1>
+        <button class="btn btn-primary" @onclick="@(()=>{@ReadonlyState= false;})" >Update </button>
+        <button class="btn btn-success" @onclick="@(()=>{@ReadonlyState =true;})" >Save </button>
+        </div>
+        
+    </div>
+    <div class="TaskContainer">
+    
+@foreach (var items in Container)
+{   
+         <div class="_container">
+
+                <h1> @items.TaskName Task</h1>
+
+        
+        <p>
+        <label class="form-label ">Task Name</label>
+    <input  @bind-value="@items.TaskName" class="form-control " readonly="@ReadonlyState" />
+        </p>
+
+         
+    <p>
+        <label  class="form-label ">Task Categories</label>
+        <input  @bind-value="@items.TaskCategories" class="form-control" readonly="@ReadonlyState"/>
+        </p>
+    <p>
+        <label  class="form-label ">Task Deadline</label>
+        <input   @bind-value="@items.TaskDeadline" class="form-control " readonly="@ReadonlyState"/> 
+        </p>
+    <p>
+        <label  class="form-label ">Task Priority Level</label>
+        <select @bind="@items.TaskPriorityLevel" class="form-select" disabled="@ReadonlyState">
+                <option value="__">___</option>
+                <option value="Low">Low Priority</option>
+                <option value="Medium">Medium Priority</option>
+                <option value="High">High Priority</option>
+        </select>        
+</p>
+    <p>
+        <label  class="form-label ">Task Description</label>
+        <textarea @bind="@items.TaskDescription" class="form-control" readonly="@ReadonlyState" rows="5"/>
+        </p>
+   
+    <button class="btn btn-danger" @onclick="@(()=>DeleteTask(items.TaskName!))">Delete Task</button>
+</div>
+
+}
+
+</div>
+}
+
+</div>
+
+@code{
+    private TaskModel TaskObject = new();
+    private List<TaskModel> Container = new();
+    private EditContext? EditContexts;
+    private bool ReadonlyState = true;
+
+
+
+    
+    protected override void OnInitialized()
+    {
+        @* === Create New EditContext From Model ===  *@
+        EditContexts  = new(TaskObject);
+        
+    }
+
+    @* === Create New Task From Model ===  *@
+    private void CreateNewTask()
+    {
+            if (EditContexts != null && EditContexts.Validate())
+        {
+            
+            Logger.LogInformation("Form Submitted");
+
+        @* === Add New Task To Model ===  *@
+           Container.Add(new TaskModel{
+            TaskName = TaskObject.TaskName,
+           TaskCategories = TaskObject.TaskCategories,
+           TaskDeadline = TaskObject.TaskDeadline,
+           TaskDescription =TaskObject.TaskDescription,
+           TaskPriorityLevel = TaskObject.TaskPriorityLevel }
+           );
+
+        @* === Reset Model ===  *@
+
+            ResetTextbox(TaskObject);
+           
+        }
+        else
+        {
+            Logger.LogError("Form Submission Failed");
+        }
+    }
+
+
+     @* === Reset Model Method ===  *@
+    private void ResetTextbox(TaskModel model)
+    {
+        model.TaskName = null;
+        model.TaskCategories = null;
+        model.TaskDeadline = DateTime.Now;
+        model.TaskPriorityLevel = null;
+        model.TaskDescription = null;
+    }
+
+    @* === Delete Task Method ===  *@
+    private void DeleteTask(string TaskName)
+    {
+       int Index =  Container.FindIndex(0,Container.Count,x=>x.TaskName == TaskName);
+
+       Container.RemoveAt(Index);
+       
+    } 
+   
+
+
+
+}

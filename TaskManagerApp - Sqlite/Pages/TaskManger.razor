@@ -1,0 +1,132 @@
+@using TaskApp.Data
+@inject ILogger Logger
+@inject TaskAppService _Service
+@page "/"
+
+
+
+<EditForm EditContext="@EditContexts" OnValidSubmit="CreateNewTask" class="container-sm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <h2>Create a New Task</h2>
+    <div class="container">
+
+            <div class="wrapper">
+                  <label for="__tname" class="form-label">Your Task Name</label>
+        <InputText @bind-Value="TaskObject.TaskName" class="form-control" id="__tname"></InputText>
+            </div>
+      
+        <div class="wrapper">
+              <label for="__tdeal" class="form-label"> Your Task's Dealine </label>
+        <InputDate @bind-Value="TaskObject.TaskDeadline" class="form-control" id="__tdeal"></InputDate>
+
+        </div>
+
+        <div class="wrapper">
+              <label for="__tdeal" class="form-label"> Your Task's Priority Level </label>
+        <InputSelect @bind-Value="TaskObject.TaskPriorityLevel" class="form-control" id="__tdeal">
+
+            <option value="__">___</option>
+            <option value="Low">Low Priority</option>
+            <option value="Medium">Medium Priority</option>
+            <option value="High">High Priority</option>
+        </InputSelect>
+        </div>
+      
+            <div class="wrapper">
+                  <label for="__tpriot" class="form-label"> Your Task's Categories </label>
+        <InputText @bind-Value="TaskObject.TaskCategories" class="form-control" id="__tpriot"></InputText>
+
+            </div>
+
+      <div class="wrapper">
+     <label for="__tdes" class="form-label"> Your Task's Description </label>
+    <InputTextArea @bind-Value="TaskObject.TaskDescription" class="form-control" id="__tdes"></InputTextArea>
+
+</div>
+   
+    </div>
+
+
+
+    <button class="btn btn-primary" style="margin:1em 0;">Create A Task</button>
+</EditForm>
+
+
+<dialog open=@DialogOpenState>
+    <button class="btn btn-danger" @onclick=@(()=>DialogOpenState =(DialogOpenState == null ? "open" :
+        null)!)>Close</button>
+
+    @if (@CreationState == "pending")
+    {
+        <p class="_content">Creating New Task @TaskObject.TaskName ... </p>
+
+    }
+    else if (@CreationState == "created")
+    {
+        <p class="_content">Created New @TaskObject.TaskName Task </p>
+        <p>Click here to view all Tasks</p>
+        <NavLink href="TasksList" class="btn btn-primary">Go to Task Lists</NavLink>
+
+    }
+</dialog>
+
+@code {
+    private TaskModel TaskObject = new();
+    private EditContext? EditContexts;
+
+    private string CreationState = null!;
+
+    private string DialogOpenState = null!;
+
+
+    protected override void OnInitialized()
+    {
+        EditContexts = new(TaskObject);
+    }
+
+    private async void CreateNewTask()
+    {
+        CreationState = "pending";
+        DialogOpenState = "open";
+        System.Console.WriteLine(DialogOpenState);
+        System.Console.WriteLine(CreationState);
+        if (EditContexts != null && EditContexts.Validate())
+        {
+            Logger.LogInformation("Form Submitted at {Time}", DateTime.Now);
+
+            await _Service.AddNewTask(TaskObject);
+            CreationState = "created";
+            DialogOpenState = "";
+            ResetModel();
+
+        }
+        else
+        {
+            CreationState = "failed";
+            Logger.LogInformation("Form Submission Failed at {Time}", DateTime.UtcNow);
+            DialogOpenState = "";
+
+        }
+    }
+
+    @* Resetting Model *@
+    private void ResetModel()
+    {
+        TaskObject.TaskCategories = null;
+        TaskObject.TaskDeadline = DateTime.Now;
+        TaskObject.TaskDescription = null;
+        TaskObject.TaskName = null;
+        TaskObject.TaskPriorityLevel = null;
+        TaskObject.TaskID = 0;
+    }
+
+
+
+
+
+
+
+
+}

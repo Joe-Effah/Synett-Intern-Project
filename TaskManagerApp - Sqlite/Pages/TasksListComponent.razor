@@ -1,0 +1,85 @@
+@using TaskApp.Data;
+@inject ILogger Logger
+@inject TaskAppService _Service
+@page "/TasksList"
+
+
+<div class="Tasks">
+
+
+
+    @if (@LoadingState)
+    {
+    <p>Loading Tasks ... </p>
+
+    }
+    else if(@LoadingState == false)
+    {
+    @if (Container is null)
+    {
+        <h3>No Tasks Has Been Created</h3>
+
+    }
+    else
+    {       
+    <h4>List Of All Tasks  <button style="margin: 1em 0;" class="btn btn-dark" @onclick="@(()=>RefreshContainer())">Refresh List </button> </h4>
+        
+
+        
+
+        @foreach (var items in Container.OrderByDescending(x=>x.TaskPriorityLevel == "High"))
+        {
+            <TaskJobComponent taskJobData="@items"/>
+        }
+    }
+    }
+
+
+
+
+</div>
+
+
+
+
+@code {
+
+
+    private  List<TaskModel>? Container { get; set; }
+
+    
+    private bool LoadingState;
+
+
+    
+    protected override async Task OnInitializedAsync()
+    {
+        
+        LoadingState = true;
+        Container = await _Service.GetAllTasks();
+        _Service.TaskComponetMessages+=UpdateUI!;
+        LoadingState = false;
+        
+
+    }
+
+    private async Task RefreshContainer()
+    {
+        Container = await _Service.GetAllTasks();
+       
+    }
+
+    private async void UpdateUI(object e,string args)
+    {
+        @* System.Console.WriteLine(args); *@
+            this.StateHasChanged();
+        Container = await _Service.GetAllTasks();
+
+    }
+
+   
+    
+
+
+
+}
