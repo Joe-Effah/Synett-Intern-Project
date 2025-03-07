@@ -11,7 +11,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<TaskAppService>();
-builder.Services.AddScoped<ILogger,Logger<TaskApp.App>>();
+builder.Services.AddScoped<ILogger,Logger<App>>();
 builder.Services.AddSqliteWasmDbContextFactory<SqliteDbContext>(options=> options.UseSqlite("Data Source=taskModel.sqlite3"));
 await builder.Build().RunAsync();
 
